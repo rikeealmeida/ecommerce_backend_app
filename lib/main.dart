@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_manager/screens/new_product_screen.dart';
 import 'package:get/route_manager.dart';
 
+import 'screens/orders_screen.dart';
 import 'screens/screens.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -28,8 +29,12 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/products/new',
-          page: () =>  NewProductScreen(),
+          page: () => NewProductScreen(),
         ),
+        GetPage(
+          name: '/orders',
+          page: () => OrdersScreen(),
+        )
       ],
     );
   }

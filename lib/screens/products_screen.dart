@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_manager/controllers/product_controller.dart';
 import 'package:flutter_ecommerce_manager/models/product_model.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/get.dart';
 
 import 'new_product_screen.dart';
@@ -22,6 +20,21 @@ class ProductsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: TextField(
+            //     style: const TextStyle(color: Colors.black),
+            //     decoration: const InputDecoration(
+            //         hintText: "Pesquisar",
+            //         hintStyle: TextStyle(color: Colors.black),
+            //         icon: Icon(
+            //           Icons.search,
+            //           color: Colors.black,
+            //         ),
+            //         border: InputBorder.none),
+            //     onChanged: productController.onChangedSearch,
+            //   ),
+            // ),
             SizedBox(
               height: 100,
               child: Card(
@@ -47,19 +60,19 @@ class ProductsScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: productController.products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Obx(
-                    () => SizedBox(
+              child: Obx(
+                () => ListView.builder(
+                  itemCount: productController.products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
                       height: 210,
                       child: ProductCard(
                         product: productController.products[index],
                         index: index,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ],
@@ -127,15 +140,20 @@ class ProductCard extends StatelessWidget {
                             child: SizedBox(
                               width: 175,
                               child: Slider(
-                                  activeColor: Colors.black,
-                                  inactiveColor: Colors.black12,
-                                  value: product.price,
-                                  min: 0,
-                                  max: 50,
-                                  onChanged: (value) {
-                                    productController.updateProductPrice(
-                                        index, product, value);
-                                  }),
+                                activeColor: Colors.black,
+                                inactiveColor: Colors.black12,
+                                value: product.price,
+                                min: 0,
+                                max: 50,
+                                onChanged: (value) {
+                                  productController.updateProductPrice(
+                                      index, product, value);
+                                },
+                                onChangeEnd: (value) {
+                                  productController.saveNewProductPrice(
+                                      product, 'price', value);
+                                },
+                              ),
                             ),
                           ),
                           Text(
@@ -157,15 +175,20 @@ class ProductCard extends StatelessWidget {
                           ),
                           Expanded(
                             child: Slider(
-                                activeColor: Colors.black,
-                                inactiveColor: Colors.black12,
-                                value: product.quantity.toDouble(),
-                                min: 0,
-                                max: 100,
-                                onChanged: (value) {
-                                  productController.updateProductQuantity(
-                                      index, product, value.toInt());
-                                }),
+                              activeColor: Colors.black,
+                              inactiveColor: Colors.black12,
+                              value: product.quantity.toDouble(),
+                              min: 0,
+                              max: 100,
+                              onChanged: (value) {
+                                productController.updateProductQuantity(
+                                    index, product, value.toInt());
+                              },
+                              onChangeEnd: (value) {
+                                productController.saveNewProductQuantity(
+                                    product, 'quantity', value.toInt());
+                              },
+                            ),
                           ),
                           Text(
                             product.quantity.toString(),

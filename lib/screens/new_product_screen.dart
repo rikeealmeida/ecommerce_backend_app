@@ -78,11 +78,7 @@ class NewProductScreen extends StatelessWidget {
                   "Informações do produto",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                _buildTextFormField(
-                  'ID do produto',
-                  'id',
-                  productController,
-                ),
+                
                 _buildTextFormField(
                   'Nome do produto',
                   'name',
@@ -129,7 +125,7 @@ class NewProductScreen extends StatelessWidget {
                     onPressed: () {
                       database.addProduct(
                         Product(
-                          id: int.parse(productController.newProduct['id']),
+                          id: DateTime.now().millisecondsSinceEpoch.toString(),
                           name: productController.newProduct['name'],
                           category: productController.newProduct['category'],
                           description:

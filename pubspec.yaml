@@ -40,6 +40,7 @@ dependencies:
   cloud_firestore: any
   firebase_storage: any
   image_picker: any
+  intl: any
 
 dev_dependencies:
   flutter_test:

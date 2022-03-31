@@ -13,19 +13,58 @@ class ProductController extends GetxController {
   }
 
   var newProduct = {}.obs;
-
+  
   get price => newProduct['price'];
   get quantity => newProduct['quantity'];
   get isRecommended => newProduct['isRecommended'];
   get isPopular => newProduct['isPopular'];
 
-  void updateProductPrice(int index, Product product, double value) {
+  void updateProductPrice(
+    int index,
+    Product product,
+    double value,
+  ) {
     product.price = value;
     products[index] = product;
+  }
+
+  void saveNewProductPrice(
+    Product product,
+    String field,
+    double value,
+  ) {
+    database.updateField(product, field, value);
+  }
+
+  void saveNewProductQuantity(
+    Product product,
+    String field,
+    int value,
+  ) {
+    database.updateField(product, field, value);
   }
 
   void updateProductQuantity(int index, Product product, int value) {
     product.quantity = value;
     products[index] = product;
   }
+
+  // void onChangedSearch(String search) {
+  //   if (search.trim().isEmpty) {
+  //     _productsController.add(_products.values.toList());
+  //   } else {
+  //     _productsController.add(_filter(search.trim()));
+  //   }
+  // }
+
+  // List<Map<String, dynamic>> _filter(String search) {
+  //   List<Map<String, dynamic>> filteredProducts =
+  //       List.from(_products.values.toList());
+  //   filteredProducts.retainWhere((product) {
+  //     return ("${product['id']}${product['category']}${product['description']}")
+  //         .toUpperCase()
+  //         .contains(search.toUpperCase());
+  //   });
+  //   return filteredProducts;
+  // }
 }

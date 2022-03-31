@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce_manager/screens/orders_screen.dart';
 import 'package:flutter_ecommerce_manager/screens/screens.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +26,19 @@ class HomeScreen extends StatelessWidget {
                 },
                 child: const Card(
                   child: Center(child: Text("Produtos")),
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: 150,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: InkWell(
+                onTap: () {
+                  Get.to(() => OrdersScreen());
+                },
+                child: const Card(
+                  child: Center(child: Text("Pedidos")),
                 ),
               ),
             )
