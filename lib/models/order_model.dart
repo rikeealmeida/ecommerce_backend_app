@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -7,14 +6,16 @@ import 'package:equatable/equatable.dart';
 class Order extends Equatable {
   final int id;
   final int customerId;
-  final List<int> productIds;
+  final List productIds;
   final double deliveryFee;
   final double subtotal;
   final double total;
   final bool isAccepted;
   final bool isDelivered;
   final DateTime createdAt;
+  final bool isCancelled;
   Order({
+    this.isCancelled,
     this.id,
     this.customerId,
     this.productIds,
@@ -29,29 +30,31 @@ class Order extends Equatable {
   Order copyWith({
     int id,
     int customerId,
-    List<Int> productIds,
+    List productIds,
     double deliveryFee,
     double subtotal,
     double total,
     bool isAccepted,
     bool isDelivered,
     DateTime createdAt,
+    bool isCancelled,
   }) {
     return Order(
-      id: id ?? this.id,
-      customerId: customerId ?? this.customerId,
-      productIds: productIds ?? this.productIds,
-      deliveryFee: deliveryFee ?? this.deliveryFee,
-      subtotal: subtotal ?? this.subtotal,
-      total: total ?? this.total,
-      isAccepted: isAccepted ?? this.isAccepted,
-      isDelivered: isDelivered ?? this.isDelivered,
-      createdAt: createdAt ?? this.createdAt,
-    );
+        id: id ?? this.id,
+        customerId: customerId ?? this.customerId,
+        productIds: productIds ?? this.productIds,
+        deliveryFee: deliveryFee ?? this.deliveryFee,
+        subtotal: subtotal ?? this.subtotal,
+        total: total ?? this.total,
+        isAccepted: isAccepted ?? this.isAccepted,
+        isDelivered: isDelivered ?? this.isDelivered,
+        createdAt: createdAt ?? this.createdAt,
+        isCancelled: isCancelled ?? this.isCancelled);
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'isCancelled': isCancelled,
       'id': id,
       'customerId': customerId,
       'productIds': productIds,
@@ -66,6 +69,7 @@ class Order extends Equatable {
 
   factory Order.fromSnapshot(DocumentSnapshot snapshot) {
     return Order(
+      isCancelled: snapshot['isCancelled'],
       id: snapshot['id']?.toInt() ?? 0,
       customerId: snapshot['customerId'],
       productIds: snapshot['productIds'],
@@ -74,7 +78,7 @@ class Order extends Equatable {
       total: snapshot['total']?.toDouble() ?? 0.0,
       isAccepted: snapshot['isAccepted'] ?? false,
       isDelivered: snapshot['isDelivered'] ?? false,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(snapshot['createdAt']),
+      createdAt: snapshot['createdAt'].toDate(),
     );
   }
 
@@ -95,14 +99,16 @@ class Order extends Equatable {
       isAccepted,
       isDelivered,
       createdAt,
+      isCancelled,
     ];
   }
 
   static List<Order> orders = [
     Order(
+      isCancelled: false,
       id: 1,
       customerId: 2345,
-      productIds: [1, 2],
+      productIds: ["1", "2"],
       deliveryFee: 10,
       subtotal: 20,
       total: 30,
@@ -111,9 +117,10 @@ class Order extends Equatable {
       createdAt: DateTime.now(),
     ),
     Order(
+      isCancelled: false,
       id: 2,
       customerId: 245,
-      productIds: [1, 2, 3],
+      productIds: ["1", "2", "3"],
       deliveryFee: 10,
       subtotal: 20,
       total: 30,
